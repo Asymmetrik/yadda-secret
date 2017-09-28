@@ -3,7 +3,10 @@
   "description": "Client secret library",
   "version": "0.0.1",
   "main": "index.js",
-  "author": "Asymmetrik, Ltd",
+  "author": "contributors",
+  "contributors": [
+    { "name" : "Christopher Sidell" }
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=6"
@@ -15,7 +18,6 @@
   "dependencies": {
     "aws-sdk": "^2.5.1",
     "bluebird": "^3.5.0",
-    "lodash": "^4.17.4",
     "nodecredstash": "^1.1.0"
   }
 }
