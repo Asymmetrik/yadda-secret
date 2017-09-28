@@ -1,0 +1,21 @@
+{
+  "name": "@asymmetrik/yadda-secret",
+  "description": "Client secret library",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Asymmetrik, Ltd",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Asymmetrik/yadda-secret.git"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.5.1",
+    "bluebird": "^3.5.0",
+    "lodash": "^4.17.4",
+    "nodecredstash": "^1.1.0"
+  }
+}
