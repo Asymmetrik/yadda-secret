@@ -1,6 +1,7 @@
 'use strict';
 
 const Wrapper = require('./src/wrapper');
+const env = require('./src/lib/env');
 
 /**
  * @param {object} options - Secret options
@@ -37,10 +38,10 @@ module.exports = (options) => {
     }
 };
 
-module.exports.getSecretTable = function(){ return process.env.__YADDA__DEPLOYMENT_SECRET_TABLE__ || null };
-module.exports.getSecretRegion = function(){ return process.env.__YADDA__DEPLOYMENT_SECRET_TABLE_REGION__ || null };
-module.exports.getSecretPrefix = function(){ return process.env.__YADDA__DEPLOYMENT_SECRET_PREFIX__ || null };
-module.exports.getSecretKMSAlias = function(){ return process.env.__YADDA__DEPLOYMENT_SECRET_KMSALIAS__ || null };
+module.exports.getSecretTable = env.getSecretTable;
+module.exports.getSecretRegion = env.getSecretRegion;
+module.exports.getSecretPrefix = env.getSecretPrefix;
+module.exports.getSecretKMSAlias = env.getSecretKMSAlias;
 
 module.exports.generateSecretKey = require('./src/lib/secretGen');
 
