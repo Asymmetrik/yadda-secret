@@ -8,7 +8,7 @@ class SecretStore {
 
     /**
      * Interact with the secret credential store
-     * @param options - Credential store options
+     * @param options - Credential store options (As implemented: https://github.com/DavidTanner/nodecredstash)
      */
     constructor(options){
         if(!options.awsOpts.region)
@@ -23,7 +23,6 @@ class SecretStore {
      * Get secret
      * @param name {string} Secret name, case sensitive
      * @param version {number} Secret Version, defaults to newest
-     * @param environment {string} Secret environment, case insensitive
      * @param context {*} KMS Context
      * @return {Promise<string>}
      */

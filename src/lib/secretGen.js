@@ -3,8 +3,9 @@
 const env = require('./env');
 
 /**
- * Generate secret
- * @param {object|string} options
+ * Generate secret key
+ * @param {object|string} options - Given an object it will construct the key from provided options. Given a string the
+ *  key will be generated from the yadda environment.
  * @param {string} options.app Application name
  * @param {string} options.region Application region
  * @param {string} options.env Application environment

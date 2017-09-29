@@ -28,13 +28,6 @@ module.exports = (options) => {
          * @return {*}
          */
         KMS_Handler(config){ return wrapper.KMS_Handler(config); },
-
-        /**
-         * Return config object that has all KMS objects resolved
-         * @param config Config object
-         * @return {*}
-         */
-        PreSolve(config){ return wrapper.solve(config); }
     }
 };
 
