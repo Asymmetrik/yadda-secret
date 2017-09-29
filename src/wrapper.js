@@ -36,8 +36,6 @@ class Wrapper {
             this.store = new SecretStore({ table, awsOpts: { region }, kmsKey });
 
         return this.store;
-
-        throw new Error(`Region '${region}' or table '${table}' is invalid`);
     }
 
     /**
