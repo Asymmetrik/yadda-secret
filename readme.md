@@ -102,3 +102,21 @@ function BusinessController(app) {
 
 
 ```
+
+### Usage in Test configs
+
+The preferred option is to keep your configs the same and define the test values in the environment, if your testing
+doesn't easily allow for that configuration you're able to pass a second argument to KMSVAR.
+
+The second argument will transform your secret to resolve the given value and not touch the secrets database.
+
+```
+const { KMSVAR } = require('@asymmetrik/yadda-secret');
+
+module.exports = {
+    myCoolApp: 'Hail Hydra',
+    
+    hydraPassphrase: KMSVAR('HYRDA_PASSPHRASE', 'secret_phrase'),
+    hydraSecret: KMSVAR('HYRDA_SECRET', 'secretive_secret'),
+};
+```
