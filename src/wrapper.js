@@ -82,7 +82,7 @@ class Wrapper {
                 }
 
                 // If a subobject add special handler
-                if (typeof target[name] === 'object')
+                if (typeof target[name] === 'object' && !Array.isArray(target[name]))
                     return this.KMS_Handler(target[name]);
 
                 // Plain property, return it
