@@ -1,0 +1,23 @@
+{
+  "name": "@asymmetrik/yadda-secret",
+  "description": "Client secret library",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "contributors",
+  "contributors": [
+    { "name" : "Christopher Sidell" }
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Asymmetrik/yadda-secret.git"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.5.1",
+    "bluebird": "^3.5.0",
+    "nodecredstash": "^1.1.0"
+  }
+}
