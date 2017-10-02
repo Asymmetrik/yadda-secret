@@ -34,6 +34,8 @@ in the KMSVAR and wrap any environment variables to turn them into KMS variables
 
 *Note: KMS variables are lazy evaluated, if you don't use a secret it is not retrieved.*
 
+#### Arrays of KMS values are not supported
+
 ```
 const { KMSVAR } = require('@asymmetrik/yadda-secret');
 
