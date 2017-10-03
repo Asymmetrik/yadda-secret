@@ -70,7 +70,7 @@ class Wrapper {
                     return undefined;
 
                 // Handle KMS Variables separately
-                if (target[name].constructor === KMSFLAG) {
+                if (typeof target[name] === 'object' && target[name].constructor === KMSFLAG) {
                     // If given a resolved variable, resolve to the value directly
                     if (target[name].resolveTo !== undefined)
                         return Promise.resolve(target[name].resolveTo);
