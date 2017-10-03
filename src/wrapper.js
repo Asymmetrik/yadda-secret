@@ -71,12 +71,12 @@ class Wrapper {
 
                 // Handle KMS Variables separately
                 if (typeof target[name] === 'object' && target[name].constructor === KMSFLAG) {
-                    // If given a resolved variable, resolve to the value directly
-                    if (target[name].resolveTo !== undefined)
-                        return Promise.resolve(target[name].resolveTo);
-                    // If variable is in environment use it instead for backwards comparability & testing
-                    else if (target[name].name in process.env)
+                    // If variable is in environment use it instead for backwards comparability
+                    if (target[name].name in process.env)
                         return Promise.resolve(process.env[target[name].name]);
+                    // If given a resolved variable, resolve to the value directly
+                    else if (target[name].resolveTo !== undefined)
+                        return Promise.resolve(target[name].resolveTo);
                     else
                         return this.retrieveFromKMS(target[name].name);
                 }
