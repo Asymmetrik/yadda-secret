@@ -4,7 +4,8 @@ const KMSFLAG = require('./kmsflag');
 
 /**
  * Generate KMS variable facade
- * @param variableName
+ * @param {string} variableName
+ * @param {string|null|undefined} autoResolveValue USED FOR TESTING ENVIRONMENTS ONLY
  * @return {KMSFLAG}
  */
-module.exports = (variableName) => new KMSFLAG(variableName);
+module.exports = (variableName, autoResolveValue = undefined) => new KMSFLAG(variableName, autoResolveValue);

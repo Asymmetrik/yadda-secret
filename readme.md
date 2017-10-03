@@ -34,6 +34,8 @@ in the KMSVAR and wrap any environment variables to turn them into KMS variables
 
 *Note: KMS variables are lazy evaluated, if you don't use a secret it is not retrieved.*
 
+#### Arrays of KMS values are not supported
+
 ```
 const { KMSVAR } = require('@asymmetrik/yadda-secret');
 
@@ -101,4 +103,22 @@ function BusinessController(app) {
 }
 
 
+```
+
+### Usage in Test configs
+
+The preferred option is to keep your configs the same and define the test values in the environment, if your testing
+doesn't easily allow for that configuration you're able to pass a second argument to KMSVAR.
+
+The second argument will transform your secret to resolve the given value and not touch the secrets database.
+
+```
+const { KMSVAR } = require('@asymmetrik/yadda-secret');
+
+module.exports = {
+    myCoolApp: 'Hail Hydra',
+    
+    hydraPassphrase: KMSVAR('HYRDA_PASSPHRASE', 'secret_phrase'),
+    hydraSecret: KMSVAR('HYRDA_SECRET', 'secretive_secret'),
+};
 ```

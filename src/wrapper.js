@@ -58,16 +58,6 @@ class Wrapper {
         return new Proxy(config, this.handler());
     }
 
-    /**
-     * Go through configuration tree and solve KMS dependencies
-     * @param config
-     */
-    solve(config){
-        return new Promsise((resolve, reject) => {
-            return void resolve(config);
-        });
-    }
-
     handler() {
         /**
          * Proxy handler
@@ -80,15 +70,19 @@ class Wrapper {
                     return undefined;
 
                 // Handle KMS Variables separately
-                if (target[name].constructor === KMSFLAG)
+                if (typeof target[name] === 'object' && target[name].constructor === KMSFLAG) {
+                    // If given a resolved variable, resolve to the value directly
+                    if (target[name].resolveTo !== undefined)
+                        return Promise.resolve(target[name].resolveTo);
                     // If variable is in environment use it instead for backwards comparability & testing
-                    if(target[name].name in process.env)
+                    else if (target[name].name in process.env)
                         return Promise.resolve(process.env[target[name].name]);
                     else
                         return this.retrieveFromKMS(target[name].name);
+                }
 
                 // If a subobject add special handler
-                if (typeof target[name] === 'object')
+                if (typeof target[name] === 'object' && !Array.isArray(target[name]))
                     return this.KMS_Handler(target[name]);
 
                 // Plain property, return it
