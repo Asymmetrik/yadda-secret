@@ -34,6 +34,8 @@ class Wrapper {
         const { region, table, kmsKey } = this.options;
         if(region && table)
             this.store = new SecretStore({ table, awsOpts: { region }, kmsKey });
+        else
+            throw new Error('Region & Table are not defined, are you in a Yadda environment?');
 
         return this.store;
     }
