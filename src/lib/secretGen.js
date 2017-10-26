@@ -22,5 +22,5 @@ module.exports = function(options = { app: '', region: '', env: '', name: '' }) 
     // it ends up generating secret's with a name like app/region/env//name
     prefix = options.name ? [prefix, options.name].join('/') : prefix;
 
-    return length > 3 ? modifiedPrefix : options.name;
+    return length > 3 ? prefix : options.name;
 };
