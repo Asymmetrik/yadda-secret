@@ -1,12 +1,15 @@
 {
   "name": "@asymmetrik/yadda-secret",
   "description": "Client secret library",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "index.js",
   "author": "contributors",
   "contributors": [
     {
       "name": "Christopher Sidell"
+    },
+    {
+      "name": "Robert Winterbottom"
     }
   ],
   "license": "MIT",

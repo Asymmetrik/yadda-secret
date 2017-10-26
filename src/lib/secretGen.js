@@ -16,7 +16,11 @@ module.exports = function(options = { app: '', region: '', env: '', name: '' }) 
     if(typeof options === 'string')
         return [env.getSecretPrefix() || '', options].join('/');
 
-    const prefix = [options.app, options.region, options.env].map(a => a.toLowerCase()).join('/');
+    let prefix = [options.app, options.region, options.env].map(a => a.toLowerCase()).join('/');
+    let length = prefix.length;
+    // Don't call join('/') if name is an empty string because then the prefix will be invalid
+    // it ends up generating secret's with a name like app/region/env//name
+    prefix = options.name ? [prefix, options.name].join('/') : prefix;
 
-    return prefix.length > 3 ? [prefix, options.name].join('/') : options.name;
+    return length > 3 ? modifiedPrefix : options.name;
 };
