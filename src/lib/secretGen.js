@@ -15,8 +15,9 @@ const env = require('./env');
 module.exports = function(options = { app: '', region: '', env: '', name: '' }) {
     if(typeof options === 'string')
         return [env.getSecretPrefix() || '', options].join('/');
-
-    const prefix = [options.app, options.region, options.env].map(a => a.toLowerCase()).join('/');
-
-    return prefix.length > 3 ? [prefix, options.name].join('/') : options.name;
+        
+    return [options.app, options.region, options.env, options.name]
+      .filter(a => a)
+      .map(a => a.toLowerCase())
+      .join('/');
 };
