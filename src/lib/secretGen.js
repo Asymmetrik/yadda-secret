@@ -18,6 +18,6 @@ module.exports = function(options = { app: '', region: '', env: '', name: '' }) 
         
     return [options.app, options.region, options.env, options.name]
       .filter(a => a)
-      .map(a => a.toLowerCase())
+      .map((a, i, c) => i < c.length - 1 ? a.toLowerCase() : a)
       .join('/');
 };
