@@ -47,8 +47,8 @@ class Wrapper {
      * @return {Promise.<string>}
      */
     retrieveFromKMS(value){
-        //Wrap in promise to catch errors calling `this.storage`
-        return this.storage.getSecret({ name: value });
+        //Wrap in promise so errors calling `this.storage` will result in a null value for the secret
+        return new Promise.resolve(this.storage.getSecret({ name: value })).catch();
     }
 
     /**
