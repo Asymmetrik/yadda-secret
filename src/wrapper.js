@@ -45,7 +45,7 @@ class Wrapper {
      * @return {Promise.<string>}
      */
     retrieveFromKMS(value){
-        return this.storage ? this.storage.getSecret({ name: value }) : null;
+        return Promise.resolve(this.storage ? this.storage.getSecret({ name: value }) : null);
     }
 
     /**
