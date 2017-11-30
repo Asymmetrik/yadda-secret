@@ -67,6 +67,9 @@ class Wrapper {
             get: (target, name) => {
                 if (!(name in target))
                     return undefined;
+                // If the value is falsey, return it since it won't have a constructor
+                if (!target[name])
+                    return target[name];
 
                 // Handle KMS Variables separately
                 if (typeof target[name] === 'object' && target[name].constructor === KMSFLAG) {
