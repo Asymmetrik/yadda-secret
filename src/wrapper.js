@@ -34,8 +34,6 @@ class Wrapper {
         const { region, table, kmsKey } = this.options;
         if(region && table)
             this.store = new SecretStore({ table, awsOpts: { region }, kmsKey });
-        else
-            throw new Error('Region & Table are not defined, are you in a Yadda environment?');
 
         return this.store;
     }
@@ -47,8 +45,7 @@ class Wrapper {
      * @return {Promise.<string>}
      */
     retrieveFromKMS(value){
-        //Wrap in promise to catch errors calling `this.storage`
-        return this.storage.getSecret({ name: value });
+        return Promise.resolve(this.storage ? this.storage.getSecret({ name: value }) : null);
     }
 
     /**
@@ -70,6 +67,9 @@ class Wrapper {
             get: (target, name) => {
                 if (!(name in target))
                     return undefined;
+                // If the value is falsey, return it since it won't have a constructor
+                if (!target[name])
+                    return target[name];
 
                 // Handle KMS Variables separately
                 if (typeof target[name] === 'object' && target[name].constructor === KMSFLAG) {
