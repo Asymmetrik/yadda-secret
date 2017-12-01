@@ -31,9 +31,12 @@ class Wrapper {
         if(this.store)
             return this.store;
 
-        const { region, table, kmsKey } = this.options;
+        const { region, table, kmsKey, kmsRegion } = this.options;
         if(region && table)
-            this.store = new SecretStore({ table, awsOpts: { region }, kmsKey });
+            this.store = new SecretStore({ table, awsOpts: { region }, kmsOpts: { region: kmsRegion }, kmsKey });
+        else {
+            console.warn('region and table are not defined!');
+        }
 
         return this.store;
     }
@@ -45,7 +48,7 @@ class Wrapper {
      * @return {Promise.<string>}
      */
     retrieveFromKMS(value){
-        return Promise.resolve(this.storage ? this.storage.getSecret({ name: value }) : null);
+        return this.storage ? this.storage.getSecret({ name: value }) : Promise.resolve(null);
     }
 
     /**
