@@ -19,7 +19,8 @@ module.exports = (options) => {
             region: module.exports.getSecretRegion(),
             table: module.exports.getSecretTable(),
             kmsKey: module.exports.getSecretKMSAlias(),
-            kmsRegion: module.exports.getSecretKMSRegion()
+            kmsRegion: module.exports.getSecretKMSRegion(),
+            cacheBuster: module.exports.getSecretCacheBusterKey()
         });
 
     return {
@@ -37,6 +38,7 @@ module.exports.getSecretRegion = env.getSecretRegion;
 module.exports.getSecretPrefix = env.getSecretPrefix;
 module.exports.getSecretKMSAlias = env.getSecretKMSAlias;
 module.exports.getSecretKMSRegion = env.getSecretKMSRegion;
+module.exports.getSecretCacheBusterKey = env.getSecretCacheBusterKey;
 
 module.exports.generateSecretKey = require('./src/lib/secretGen');
 

@@ -31,9 +31,9 @@ class Wrapper {
         if(this.store)
             return this.store;
 
-        const { region, table, kmsKey, kmsRegion } = this.options;
+        const { region, table, kmsKey, kmsRegion, cacheBuster } = this.options;
         if(region && table)
-            this.store = new SecretStore({ table, awsOpts: { region }, kmsOpts: { region: kmsRegion }, kmsKey });
+            this.store = new SecretStore({ table, awsOpts: { region }, kmsOpts: { region: kmsRegion }, kmsKey, cacheBuster });
         else {
             console.warn('region and table are not defined!');
         }
