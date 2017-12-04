@@ -23,6 +23,7 @@ will need to be defined in the environment in order for this tool to work.
 - `__YADDA__DEPLOYMENT_SECRET_PREFIX__`: The secret key prefix (*AppName/Region/Environment*)
 - `__YADDA__DEPLOYMENT_SECRET_KMSALIAS__`: The KMS CMK alias to encrypt and decrypt
 - `__YADDA__DEPLOYMENT_SECRET_REGION__`: The region the KMS key resides in (optional)
+- `__YADDA__DEPLOYMENT_SECRET_CACHE_BUSTER_KEY__`: The key for the cache buster secret (optional)
 
 Developers using this tool will not need access to the CMK but the resulting deployed container will need 
 access.
