@@ -55,7 +55,7 @@ class SecretStore {
                 .then((secret) => {
                     this.cache[key] = {
                         timestamp: Date.now(),
-                        value: secret;
+                        value: secret
                     };
                     resolve(secret);
                 })
