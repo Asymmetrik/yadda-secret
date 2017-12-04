@@ -18,7 +18,7 @@ class SecretStore {
             // check the cache buster key every minute
             const cacheBusterKey = options.cacheBuster;
             setInterval(() => {
-                getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret));
+                this.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret));
             }, 60000);
             delete options.cacheBuster;
         }
@@ -43,7 +43,7 @@ class SecretStore {
                 if(this.cache[key].timestamp < this.cacheRefreshTime)
                     delete this.cache[key];
                 else
-                    return void resolve(this.cache[key]);
+                    return void resolve(this.cache[key].value);
             }
 
             //Can't return this as it's not interpreted as a promise...
