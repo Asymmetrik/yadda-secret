@@ -49,6 +49,7 @@ class SecretStore {
             }
 
             //Can't return this as it's not interpreted as a promise...
+            const timestamp = Date.now();
             this.store.getSecret({
                 name: key,
                 version,
@@ -56,7 +57,7 @@ class SecretStore {
             })
                 .then((secret) => {
                     this.cache[key] = {
-                        timestamp: Date.now(),
+                        timestamp: timestamp,
                         value: secret
                     };
                     resolve(secret);
