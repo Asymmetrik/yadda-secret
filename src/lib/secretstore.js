@@ -14,17 +14,19 @@ class SecretStore {
         if(!options.awsOpts.region)
             throw new Error('AWS Region must be defined');
 
-        if(options.cacheBuster) {
-            // check the cache buster key every minute
-            const cacheBusterKey = options.cacheBuster;
-            setInterval(() => {
-                this.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret));
-            }, 60000);
-            delete options.cacheBuster;
-        }
+        const cacheBuster = options.cacheBuster;
+        delete options.cacheBuster;
         this.options = options;
         this.store = new Credstash(options);
         this.cache = {};
+
+        // check the cache buster key every minute
+        if(cacheBuster) {
+            const cacheBusterKey = secretGen(cacheBuster);
+            setInterval(() => {
+                this.store.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret));
+            }, 60000);
+        }
     }
 
     /**
@@ -47,6 +49,7 @@ class SecretStore {
             }
 
             //Can't return this as it's not interpreted as a promise...
+            const timestamp = Date.now();
             this.store.getSecret({
                 name: key,
                 version,
@@ -54,7 +57,7 @@ class SecretStore {
             })
                 .then((secret) => {
                     this.cache[key] = {
-                        timestamp: Date.now(),
+                        timestamp: timestamp,
                         value: secret
                     };
                     resolve(secret);
