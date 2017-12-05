@@ -24,7 +24,7 @@ class SecretStore {
         if(cacheBuster) {
             const cacheBusterKey = secretGen(cacheBuster);
             setInterval(() => {
-                this.store.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret)).catch(console.log);
+                this.store.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret)).catch(console.error);
             }, 60000);
         }
     }
