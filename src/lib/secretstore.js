@@ -3,6 +3,7 @@
 const Promise = require('bluebird');
 const Credstash = require('nodecredstash');
 const secretGen = require('./secretGen');
+const AWS = require('aws-sdk');
 
 class SecretStore {
 
@@ -22,10 +23,19 @@ class SecretStore {
 
         // check the cache buster key every minute
         if(cacheBuster) {
-            const cacheBusterKey = secretGen(cacheBuster);
+            const dynamoDB = new AWS.DynamoDB.DocumentClient({
+                region: options.awsOpts.region,
+                params: {
+                    TableName: options.table,
+                    ConsistentRead: true,
+                    KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
+                }
+            });
             setInterval(() => {
-                this.store.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret)).catch(console.error);
-            }, 60000);
+                dynamoDB.query()
+                    .then(value => this.cacheRefreshTime = Number(value))
+                    .catch(console.error);
+            }, 60000).unref();
         }
     }
 
