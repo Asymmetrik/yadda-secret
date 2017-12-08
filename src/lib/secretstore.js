@@ -33,7 +33,6 @@ class SecretStore {
                 Key: {
                     name: secretGen(cacheBuster)
                 }
-                KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
             }
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
