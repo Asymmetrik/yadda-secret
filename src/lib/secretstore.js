@@ -24,7 +24,10 @@ class SecretStore {
                 TableName: options.table,
                 Limit: 1,
                 ConsistentRead: true,
-                KeyConditionExpression: 'name = :name',
+                KeyConditionExpression: '#name = :name',
+                ExpressionAttributeNames: {
+                    '#name': 'name'
+                },
                 ExpressionAttributeValues: {
                     ':name': secretGen(options.cacheBuster)
                 }
