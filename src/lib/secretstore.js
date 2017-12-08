@@ -25,20 +25,23 @@ class SecretStore {
         if(cacheBuster){
             console.log(cacheBuster);
             const dynamoDB = new AWS.DynamoDB.DocumentClient({
-                region: options.awsOpts.region,
-                params: {
-                    TableName: options.table,
-                    Limit: 1,
-                    ConsistentRead: true,
-                    KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
-                }
+                region: options.awsOpts.region
             });
+            const params = {
+                TableName: options.table,
+                ConsistentRead: true,
+                Key: {
+                    name: secretGen(cacheBuster)
+                }
+                KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
+            }
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
-                dynamoDB.query((err, value) => {
+                dynamoDB.get(params, (err, obj) => {
+                    console.log(err, obj);
                     if(err)
                         return void console.error(err);
-                    this.cacheRefreshTime = Number(value);
+                    this.cacheRefreshTime = Number(obj.Item);
                 });
             }, 60000).unref();
         }
