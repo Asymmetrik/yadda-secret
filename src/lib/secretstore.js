@@ -24,6 +24,7 @@ class SecretStore {
                 TableName: options.table,
                 Limit: 1,
                 ConsistentRead: true,
+                ScanIndexForward: false,
                 KeyConditionExpression: '#name = :name',
                 ExpressionAttributeNames: {
                     '#name': 'name'
