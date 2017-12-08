@@ -15,35 +15,33 @@ class SecretStore {
         if(!options.awsOpts.region)
             throw new Error('AWS Region must be defined');
 
-        const cacheBuster = options.cacheBuster;
-        delete options.cacheBuster;
-        this.options = options;
-        this.store = new Credstash(options);
-        this.cache = {};
-
         // check the cache buster key every minute
-        if(cacheBuster){
-            console.log(cacheBuster);
+        if(options.cacheBuster){
+            console.log('cacheBuster: ' + options.cacheBuster);
             const dynamoDB = new AWS.DynamoDB.DocumentClient({
                 region: options.awsOpts.region
             });
             const params = {
                 TableName: options.table,
+                Limit: 1
                 ConsistentRead: true,
-                Key: {
-                    name: secretGen(cacheBuster)
-                }
+                KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
             }
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
-                dynamoDB.get(params, (err, obj) => {
+                dynamoDB.query(params, (err, obj) => {
                     console.log(err, obj);
                     if(err)
                         return void console.error(err);
                     this.cacheRefreshTime = Number(obj.Item);
                 });
             }, 60000).unref();
+            delete options.cacheBuster;
         }
+
+        this.options = options;
+        this.store = new Credstash(options);
+        this.cache = {};
     }
 
     /**
