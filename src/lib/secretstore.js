@@ -23,25 +23,24 @@ class SecretStore {
             });
             const params = {
                 TableName: options.table,
-                Limit: 1,
                 ConsistentRead: true,
-                KeyConditionExpression: '#name = :name',
-                ExpressionAttributeNames: {
-                    '#name': 'name'
+                Key: {
+                    'name = :name',
                 },
+                AttributesToGet: ['contents']
                 ExpressionAttributeValues: {
                     ':name': secretGen(options.cacheBuster)
                 }
             }
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
-                dynamoDB.query(params, (err, obj) => {
+                dynamoDB.get(params, (err, obj) => {
                     console.log(err, obj);
                     if(err)
                         return void console.error(err);
-                    this.cacheRefreshTime = Number(obj.Item);
+                    this.cacheRefreshTime = Number(obj.Item.contents);
                 });
-            }, 60000).unref();
+            }, 5000).unref();
             delete options.cacheBuster;
         }
 
