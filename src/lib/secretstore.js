@@ -24,6 +24,7 @@ class SecretStore {
                 TableName: options.table,
                 Limit: 1,
                 ConsistentRead: true,
+                ScanIndexForward: false,
                 KeyConditionExpression: '#name = :name',
                 ExpressionAttributeNames: {
                     '#name': 'name'
@@ -33,13 +34,14 @@ class SecretStore {
                 }
             };
             setInterval(() => {
+                console.log(this.cacheRefreshTime);
                 dynamoDB.query(params, (err, obj) => {
                     if(err)
                         return void console.error(err);
                     if(obj && obj.Items && obj.Items.length && obj.Items[0].contents)
                         this.cacheRefreshTime = Number(obj.Items[0].contents);
                 });
-            }, 60000).unref();
+            }, 5000).unref();
             delete options.cacheBuster;
         }
 
