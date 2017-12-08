@@ -34,14 +34,13 @@ class SecretStore {
                 }
             };
             setInterval(() => {
-                console.log(this.cacheRefreshTime);
                 dynamoDB.query(params, (err, obj) => {
                     if(err)
                         return void console.error(err);
                     if(obj && obj.Items && obj.Items.length && obj.Items[0].contents)
                         this.cacheRefreshTime = Number(obj.Items[0].contents);
                 });
-            }, 5000).unref();
+            }, 60000).unref();
             delete options.cacheBuster;
         }
 
