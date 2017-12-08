@@ -39,7 +39,8 @@ class SecretStore {
                     console.log(err, obj);
                     if(err)
                         return void console.error(err);
-                    this.cacheRefreshTime = Number(obj.Items[0].contents);
+                    if(obj && obj.Items && obj.Items[0].contents)
+                        this.cacheRefreshTime = Number(obj.Items[0].contents);
                 });
             }, 5000).unref();
             delete options.cacheBuster;
