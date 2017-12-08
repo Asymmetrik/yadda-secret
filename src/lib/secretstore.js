@@ -17,28 +17,26 @@ class SecretStore {
 
         // check the cache buster key every minute
         if(options.cacheBuster){
-            console.log('cacheBuster: ' + options.cacheBuster);
             const dynamoDB = new AWS.DynamoDB.DocumentClient({
                 region: options.awsOpts.region
             });
             const params = {
                 TableName: options.table,
+                Limit: 1,
                 ConsistentRead: true,
-                Key: {
-                    name: ':name'
-                },
-                AttributesToGet: ['contents'],
+                KeyConditionExpression: 'name = :name',
                 ExpressionAttributeValues: {
                     ':name': secretGen(options.cacheBuster)
                 }
             }
+            console.log(params);
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
-                dynamoDB.get(params, (err, obj) => {
+                dynamoDB.query(params, (err, obj) => {
                     console.log(err, obj);
                     if(err)
                         return void console.error(err);
-                    this.cacheRefreshTime = Number(obj.Item.contents);
+                    this.cacheRefreshTime = Number(obj.Items[0].contents);
                 });
             }, 5000).unref();
             delete options.cacheBuster;
