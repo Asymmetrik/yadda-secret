@@ -27,7 +27,7 @@ class SecretStore {
                 Key: {
                     name: ':name'
                 },
-                AttributesToGet: ['contents']
+                AttributesToGet: ['contents'],
                 ExpressionAttributeValues: {
                     ':name': secretGen(options.cacheBuster)
                 }
