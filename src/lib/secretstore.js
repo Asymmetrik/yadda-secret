@@ -25,7 +25,7 @@ class SecretStore {
                 TableName: options.table,
                 ConsistentRead: true,
                 Key: {
-                    'name = :name',
+                    name: ':name'
                 },
                 AttributesToGet: ['contents']
                 ExpressionAttributeValues: {
