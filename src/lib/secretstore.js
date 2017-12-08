@@ -23,7 +23,8 @@ class SecretStore {
 
         // check the cache buster key every minute
         if(cacheBuster) {
-            const dynamoDB = new AWS.DynamoDB.DocumentClient({
+            console.log(cacheBuster);
+            const dynamoDBQuery = Promise.promisify(new AWS.DynamoDB.DocumentClient({
                 region: options.awsOpts.region,
                 params: {
                     TableName: options.table,
@@ -31,9 +32,10 @@ class SecretStore {
                     ConsistentRead: true,
                     KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
                 }
-            });
+            }).query);
             setInterval(() => {
-                dynamoDB.query()
+                console.log(this.cacheRefreshTime);
+                dynamoDBQuery()
                     .then(value => this.cacheRefreshTime = Number(value))
                     .catch(console.error);
             }, 60000).unref();
