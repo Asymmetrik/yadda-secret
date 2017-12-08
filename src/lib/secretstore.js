@@ -3,6 +3,7 @@
 const Promise = require('bluebird');
 const Credstash = require('nodecredstash');
 const secretGen = require('./secretGen');
+const AWS = require('aws-sdk');
 
 class SecretStore {
 
@@ -14,19 +15,37 @@ class SecretStore {
         if(!options.awsOpts.region)
             throw new Error('AWS Region must be defined');
 
-        const cacheBuster = options.cacheBuster;
-        delete options.cacheBuster;
+        // check the cache buster key every minute
+        if(options.cacheBuster){
+            const dynamoDB = new AWS.DynamoDB.DocumentClient({
+                region: options.awsOpts.region
+            });
+            const params = {
+                TableName: options.table,
+                Limit: 1,
+                ConsistentRead: true,
+                KeyConditionExpression: '#name = :name',
+                ExpressionAttributeNames: {
+                    '#name': 'name'
+                },
+                ExpressionAttributeValues: {
+                    ':name': secretGen(options.cacheBuster)
+                }
+            };
+            setInterval(() => {
+                dynamoDB.query(params, (err, obj) => {
+                    if(err)
+                        return void console.error(err);
+                    if(obj && obj.Items && obj.Items.length && obj.Items[0].contents)
+                        this.cacheRefreshTime = Number(obj.Items[0].contents);
+                });
+            }, 60000).unref();
+            delete options.cacheBuster;
+        }
+
         this.options = options;
         this.store = new Credstash(options);
         this.cache = {};
-
-        // check the cache buster key every minute
-        if(cacheBuster) {
-            const cacheBusterKey = secretGen(cacheBuster);
-            setInterval(() => {
-                this.store.getSecret({name: cacheBusterKey}).then(secret => this.cacheRefreshTime = Number(secret)).catch(console.error);
-            }, 60000);
-        }
     }
 
     /**
@@ -40,7 +59,7 @@ class SecretStore {
         return new Promise((resolve, reject) => {
             const key = secretGen(name);
 
-            if(key in this.cache) {
+            if(key in this.cache){
                 // doing a less than comparison for a time to a null/undefined value will be false
                 if(this.cache[key].timestamp < this.cacheRefreshTime)
                     delete this.cache[key];
