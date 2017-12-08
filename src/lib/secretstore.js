@@ -23,7 +23,7 @@ class SecretStore {
             });
             const params = {
                 TableName: options.table,
-                Limit: 1
+                Limit: 1,
                 ConsistentRead: true,
                 KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
             }
