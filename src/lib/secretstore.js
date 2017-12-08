@@ -31,18 +31,15 @@ class SecretStore {
                 ExpressionAttributeValues: {
                     ':name': secretGen(options.cacheBuster)
                 }
-            }
-            console.log(params);
+            };
             setInterval(() => {
-                console.log(this.cacheRefreshTime);
                 dynamoDB.query(params, (err, obj) => {
-                    console.log(err, obj);
                     if(err)
                         return void console.error(err);
                     if(obj && obj.Items && obj.Items[0].contents)
                         this.cacheRefreshTime = Number(obj.Items[0].contents);
                 });
-            }, 5000).unref();
+            }, 60000).unref();
             delete options.cacheBuster;
         }
 
