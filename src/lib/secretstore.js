@@ -25,7 +25,7 @@ class SecretStore {
                 TableName: options.table,
                 Limit: 1,
                 ConsistentRead: true,
-                KeyConditionExpression: 'name = ' + secretGen(cacheBuster)
+                KeyConditionExpression: 'name = ' + secretGen(options.cacheBuster)
             }
             setInterval(() => {
                 console.log(this.cacheRefreshTime);
